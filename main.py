@@ -2,12 +2,11 @@ from sklearn.linear_model import LogisticRegression
 from random import random
 from math import log
 import numpy as np
-BC_SCALED = 'data/breast-cancer_scale.txt'
 
 
-def _read_data(all_data):
+def _bc_data():
     y, x = [], []
-    with open(all_data) as f:
+    with open('data/breast-cancer_scale.txt') as f:
         for line in f:
             row = line.strip().split(' ')
             y.append(int(row[0]))
@@ -15,7 +14,7 @@ def _read_data(all_data):
     return y, x
 
 
-def extract_binary_lr_model(m, d):
+def extract_binary_lr(m, d):
     """
     :param m: the model to extract
     :param d: dimension size of features
@@ -29,10 +28,8 @@ def extract_binary_lr_model(m, d):
 
 
 if __name__ == '__main__':
-    labels, features = _read_data(BC_SCALED)
+    labels, features = _bc_data()
     clf = LogisticRegression(random_state=0, solver='lbfgs').fit(features, labels)
-    # this the probability of second label in Y, and the probability ot first label is obtained by
-    # 1 - p(second label)
+    # this the probability of second label in Y, and the probability ot first label is obtained by 1 - p(second label)
     print(f'model coefficients are: {clf.coef_}, beta = {clf.intercept_}')  # this is the w vector
-    # noinspection PyTypeChecker
-    print(f'the extracted coeficients are {extract_binary_lr_model(clf, 10)}')
+    print(f'the extracted coeficients are {extract_binary_lr(clf, 10)}')
